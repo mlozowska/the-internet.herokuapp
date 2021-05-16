@@ -5,11 +5,11 @@
 ## Tested Examples:
 - [A/B Testing](https://the-internet.herokuapp.com/abtest)
 - [Add/Remove Elements](https://the-internet.herokuapp.com/add_remove_elements/)
-- [Basic Auth (user and pass: admin)](https://the-internet.herokuapp.com/basic_auth)
+- [Basic Auth](https://the-internet.herokuapp.com/basic_auth)(user and pass: admin)
 - [Broken Images](https://the-internet.herokuapp.com/broken_images)
 - [Checkboxes](https://the-internet.herokuapp.com/checkboxes)
 - [Context Menu](https://the-internet.herokuapp.com/context_menu)
-- [Digest Authentication (user and pass: admin)](https://the-internet.herokuapp.com/digest_auth)
+- [Digest Authentication](https://the-internet.herokuapp.com/digest_auth)(user and pass: admin)
 - [Disappearing Elements](https://the-internet.herokuapp.com/disappearing_elements)
 - [Drag and Drop](https://the-internet.herokuapp.com/drag_and_drop)
 - [Dropdown](https://the-internet.herokuapp.com/dropdown)
