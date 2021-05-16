@@ -2,7 +2,9 @@ import unittest
 from selenium import webdriver
 
 from config.test_settings import TestSettings
-from tests.page_objects import main_page, checkboxes_page, drag_drop_page, dropdown_page, status_codes_page, input_page
+from tests.page_objects import main_page, checkboxes_page, drag_drop_page, dropdown_page, status_codes_page, input_page,\
+    basic_auth_page, proper_credent_page, forgot_password_page, error_500_page, form_authentication_page, logout_page, hovers_page,\
+    not_found_page, context_menu_page, file_upload_page, upload_confirmation_page
 
 
 class Tests(unittest.TestCase):
@@ -81,3 +83,59 @@ class Tests(unittest.TestCase):
     def test_incorrect_input(self):
         input_page.click_input_tab(self.driver)
         self.assertTrue(input_page.send_incorrect_keys_to_input(self.driver))
+
+    # Basic Auth Page Tests
+    def test_basic_auth_send_correct_keys(self):
+        basic_auth_page.send_correct_keys(self.driver)
+        self.assertTrue(proper_credent_page.message_content_visible(self.driver))
+
+    # Forgot Password Page Tests
+    def test_forgot_password_content_visible(self):
+        forgot_password_page.click_forgot_password_tab(self.driver)
+        self.assertTrue(forgot_password_page.forgot_password_content_visible(self.driver))
+
+    def test_enter_email(self):
+        forgot_password_page.click_forgot_password_tab(self.driver)
+        self.assertTrue(forgot_password_page.send_email(self.driver))
+
+    def test_internal_server_error_visible(self):
+        Tests.test_enter_email(self)
+        forgot_password_page.click_retrieve_password(self.driver)
+        self.assertTrue(error_500_page.internal_server_error(self.driver))
+
+    # Hovers page Tests
+    def test_hovers_content_visible(self):
+        hovers_page.click_hovers_tab(self.driver)
+        self.assertTrue(hovers_page.hovers_content_visible(self.driver))
+
+    def test_hovers_user_one(self):
+        Tests.test_hovers_content_visible(self)
+        hovers_page.hover_over_element_one_and_click(self.driver)
+        self.assertTrue(not_found_page.not_found_message_visible(self.driver))
+
+    def test_hovers_user_two(self):
+        Tests.test_hovers_content_visible(self)
+        hovers_page.hover_over_element_two_and_click(self.driver)
+        self.assertTrue(not_found_page.not_found_message_visible(self.driver))
+
+    def test_hovers_user_three(self):
+        Tests.test_hovers_content_visible(self)
+        hovers_page.hover_over_element_three_and_click(self.driver)
+        self.assertTrue(not_found_page.not_found_message_visible(self.driver))
+
+    # Context Menu Page Test
+    def test_context_menu_content_visible(self):
+        context_menu_page.click_context_menu_tab(self.driver)
+        self.assertTrue(context_menu_page.context_menu_content_visible(self.driver))
+        context_menu_page.right_click_menu(self.driver)
+
+    # Upload File Page Tests
+    def test_upload_file(self):
+        file_upload_page.click_file_upload_tab(self.driver)
+        self.assertTrue(file_upload_page.file_upload_content_visible(self.driver))
+        file_upload_page.choose_file(self.driver)
+
+    def test_upload_file_confirmation(self):
+        Tests.test_upload_file(self)
+        upload_confirmation_page.file_uploaded_msg_visible(self.driver)
+
