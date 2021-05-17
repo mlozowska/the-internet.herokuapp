@@ -2,9 +2,10 @@ import unittest
 from selenium import webdriver
 
 from config.test_settings import TestSettings
-from tests.page_objects import main_page, checkboxes_page, drag_drop_page, dropdown_page, status_codes_page, input_page,\
-    basic_auth_page, proper_credent_page, forgot_password_page, error_500_page, form_authentication_page, logout_page, hovers_page,\
-    not_found_page, context_menu_page, file_upload_page, upload_confirmation_page
+from page_objects import add_remove_page, drag_drop_page, status_codes_page, context_menu_page, \
+    dropdown_page, forgot_password_page, error_500_page, upload_confirmation_page, basic_auth_page, \
+    file_upload_page, checkboxes_page, hovers_page, main_page, not_found_page, input_page, frames_page, \
+    iframe_page, key_presses
 
 
 class Tests(unittest.TestCase):
@@ -17,17 +18,27 @@ class Tests(unittest.TestCase):
     def tearDown(self):
         self.driver.quit()
 
-    # Main age Test
+    # Main Page Test
     def test_main_page_content_visible(self):
         self.assertTrue(main_page.content_visible(self.driver))
 
+    # Add/Remove Element Page Tests
+    def test_add_element(self):
+        add_remove_page.click_add_remove_tab(self.driver)
+        self.assertTrue(add_remove_page.add_remove_content_visible(self.driver))
+        add_remove_page.add_element(self.driver)
+
+    def test_remove_element(self):
+        Tests.test_add_element(self)
+        add_remove_page.remove_element(self.driver)
+        self.assertTrue(add_remove_page.element_invisible(self.driver))
+
+    # Broken Images Page Tests
+
     # Checkboxes Page Test
     def test_checkboxes(self):
-        # klikam w tab
         checkboxes_page.click_checkboxes_tab(self.driver)
-        # asercja ze contenct ok
         self.assertTrue(checkboxes_page.checkboxes_content_visible(self.driver))
-        # test - klikam checkboxes
         checkboxes_page.click_checkboxes(self.driver)
 
     # Drag and Drop Page Tests
@@ -87,7 +98,7 @@ class Tests(unittest.TestCase):
     # Basic Auth Page Tests
     def test_basic_auth_send_correct_keys(self):
         basic_auth_page.send_correct_keys(self.driver)
-        self.assertTrue(proper_credent_page.message_content_visible(self.driver))
+        self.assertTrue(correct_credentilas_page.message_content_visible(self.driver))
 
     # Forgot Password Page Tests
     def test_forgot_password_content_visible(self):
@@ -139,3 +150,27 @@ class Tests(unittest.TestCase):
         Tests.test_upload_file(self)
         upload_confirmation_page.file_uploaded_msg_visible(self.driver)
 
+    # Frames Pages Tests
+    def test_frames_content_visible(self):
+        frames_page.click_frames_header(self.driver)
+        self.assertTrue(frames_page.frames_content_visible(self.driver))
+
+    def test_iframe_content_visible(self):
+        Tests.test_frames_content_visible(self)
+        frames_page.click_iframe_header(self.driver)
+        self.assertTrue(iframe_page.iframe_content_visible(self.driver))
+
+    # Key Presses Page Tests
+    def test_enter_key_press(self):
+        key_presses.click_key_presses_tab(self.driver)
+        self.assertTrue(key_presses.key_presses_content_visible(self.driver))
+
+        key_presses.enter_key_press(self.driver)
+        # self.assertTrue(key_presses.enter_info_visible(self.driver))
+
+
+
+
+
+if __name__ == '__main__':
+    unittest.main()

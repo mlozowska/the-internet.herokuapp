@@ -9,6 +9,7 @@ def hover_over_element(driver_instance, element):
     hover = ActionChains(driver_instance).move_to_element(element)
     hover.perform()
 
+
 def right_click_operation(driver_instance, element):
     action = ActionChains(driver_instance).context_click(element)
     action.perform()
