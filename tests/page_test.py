@@ -3,9 +3,9 @@ from selenium import webdriver
 
 from config.test_settings import TestSettings
 from page_objects import add_remove_page, drag_drop_page, status_codes_page, context_menu_page, \
-    dropdown_page, forgot_password_page, error_500_page, upload_confirmation_page, basic_auth_page, \
-    file_upload_page, checkboxes_page, hovers_page, main_page, not_found_page, input_page, frames_page, \
-    iframe_page, key_presses
+    dropdown_page, forgot_password_page, error_500_page, upload_confirmation_page, basic_auth_page, auth_confirm_page, \
+    file_upload_page, checkboxes_page, hovers_page, main_page, not_found_page, inputs_page, frames_page, \
+    iframe_page, form_authentication_page, logout_page
 
 
 class Tests(unittest.TestCase):
@@ -33,7 +33,24 @@ class Tests(unittest.TestCase):
         add_remove_page.remove_element(self.driver)
         self.assertTrue(add_remove_page.element_invisible(self.driver))
 
-    # Broken Images Page Tests
+    # Basic Auth Page Test
+    def test_basic_auth_send_correct_keys(self):
+        basic_auth_page.send_correct_keys(self.driver)
+        self.assertTrue(auth_confirm_page.message_content_visible(self.driver))
+
+    # Forgot Password Page Tests
+    def test_forgot_password_content_visible(self):
+        forgot_password_page.click_forgot_password_tab(self.driver)
+        self.assertTrue(forgot_password_page.forgot_password_content_visible(self.driver))
+
+    def test_enter_email(self):
+        forgot_password_page.click_forgot_password_tab(self.driver)
+        self.assertTrue(forgot_password_page.send_email(self.driver))
+
+    def test_internal_server_error_visible(self):
+        Tests.test_enter_email(self)
+        forgot_password_page.click_retrieve_password(self.driver)
+        self.assertTrue(error_500_page.internal_server_error(self.driver))
 
     # Checkboxes Page Test
     def test_checkboxes(self):
@@ -51,12 +68,12 @@ class Tests(unittest.TestCase):
         self.assertTrue(drag_drop_page.drag_and_drop_element(self.driver))
 
     # Drop-down Page Tests
-    def test_dropdown_first_select(self):
+    def test_dropdown_option_one(self):
         dropdown_page.click_dropdown_tab(self.driver)
         self.assertTrue(dropdown_page.dropdown_content_visible(self.driver))
         dropdown_page.get_first_dropdown_value(self.driver)
 
-    def test_dropdown_second_select(self):
+    def test_dropdown_option_two(self):
         dropdown_page.click_dropdown_tab(self.driver)
         self.assertTrue(dropdown_page.dropdown_content_visible(self.driver))
         dropdown_page.get_second_dropdown_value(self.driver)
@@ -84,35 +101,16 @@ class Tests(unittest.TestCase):
 
     # Input Page Tests
     def test_input_content_visible(self):
-        input_page.click_input_tab(self.driver)
-        self.assertTrue(input_page.input_content_visible(self.driver))
+        inputs_page.click_input_tab(self.driver)
+        self.assertTrue(inputs_page.input_content_visible(self.driver))
 
     def test_correct_input(self):
-        input_page.click_input_tab(self.driver)
-        self.assertTrue(input_page.send_correct_keys_to_input(self.driver))
+        inputs_page.click_input_tab(self.driver)
+        self.assertTrue(inputs_page.send_correct_keys_to_input(self.driver))
 
     def test_incorrect_input(self):
-        input_page.click_input_tab(self.driver)
-        self.assertTrue(input_page.send_incorrect_keys_to_input(self.driver))
-
-    # Basic Auth Page Tests
-    def test_basic_auth_send_correct_keys(self):
-        basic_auth_page.send_correct_keys(self.driver)
-        self.assertTrue(correct_credentilas_page.message_content_visible(self.driver))
-
-    # Forgot Password Page Tests
-    def test_forgot_password_content_visible(self):
-        forgot_password_page.click_forgot_password_tab(self.driver)
-        self.assertTrue(forgot_password_page.forgot_password_content_visible(self.driver))
-
-    def test_enter_email(self):
-        forgot_password_page.click_forgot_password_tab(self.driver)
-        self.assertTrue(forgot_password_page.send_email(self.driver))
-
-    def test_internal_server_error_visible(self):
-        Tests.test_enter_email(self)
-        forgot_password_page.click_retrieve_password(self.driver)
-        self.assertTrue(error_500_page.internal_server_error(self.driver))
+        inputs_page.click_input_tab(self.driver)
+        self.assertTrue(inputs_page.send_incorrect_keys_to_input(self.driver))
 
     # Hovers page Tests
     def test_hovers_content_visible(self):
@@ -127,11 +125,6 @@ class Tests(unittest.TestCase):
     def test_hovers_user_two(self):
         Tests.test_hovers_content_visible(self)
         hovers_page.hover_over_element_two_and_click(self.driver)
-        self.assertTrue(not_found_page.not_found_message_visible(self.driver))
-
-    def test_hovers_user_three(self):
-        Tests.test_hovers_content_visible(self)
-        hovers_page.hover_over_element_three_and_click(self.driver)
         self.assertTrue(not_found_page.not_found_message_visible(self.driver))
 
     # Context Menu Page Test
@@ -160,15 +153,16 @@ class Tests(unittest.TestCase):
         frames_page.click_iframe_header(self.driver)
         self.assertTrue(iframe_page.iframe_content_visible(self.driver))
 
-    # Key Presses Page Tests
-    def test_enter_key_press(self):
-        key_presses.click_key_presses_tab(self.driver)
-        self.assertTrue(key_presses.key_presses_content_visible(self.driver))
+    # Form Authentication Page Tests
+    def test_send_correct_credentials(self):
+        form_authentication_page.click_form_authentication_tab(self.driver)
+        form_authentication_page.send_correct_data(self.driver)
+        self.assertTrue(logout_page.secure_area_message_visible(self.driver))
 
-        key_presses.enter_key_press(self.driver)
-        # self.assertTrue(key_presses.enter_info_visible(self.driver))
-
-
+    def test_send_incorrect_credentials(self):
+        form_authentication_page.click_form_authentication_tab(self.driver)
+        form_authentication_page.send_invalid_data(self.driver)
+        self.assertTrue()
 
 
 

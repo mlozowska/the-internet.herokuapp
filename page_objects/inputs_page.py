@@ -1,4 +1,4 @@
-from tests.helpers.support_functions import *
+from helpers.support_functions import *
 
 input_header = '//*[@id="content"]/ul/li[27]/a'
 input_content = 'content'

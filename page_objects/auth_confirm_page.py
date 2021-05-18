@@ -1,4 +1,4 @@
-from tests.helpers.support_functions import *
+from helpers.support_functions import *
 
 
 basic_auth_message = '//*[@id="content"]/div/p'
