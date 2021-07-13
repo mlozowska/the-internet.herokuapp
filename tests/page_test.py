@@ -5,7 +5,7 @@ from config.test_settings import TestSettings
 from page_objects import add_remove_page, drag_drop_page, status_codes_page, context_menu_page, \
     dropdown_page, forgot_password_page, error_500_page, upload_confirmation_page, basic_auth_page, auth_confirm_page, \
     file_upload_page, checkboxes_page, hovers_page, main_page, not_found_page, inputs_page, frames_page, \
-    iframe_page, form_authentication_page, logout_page
+    iframe_page, form_authentication_page, logout_page, digest_auth_page, confirm_digest_auth_page
 
 
 class Tests(unittest.TestCase):
@@ -133,6 +133,11 @@ class Tests(unittest.TestCase):
         self.assertTrue(context_menu_page.context_menu_content_visible(self.driver))
         context_menu_page.right_click_menu(self.driver)
 
+    # Digest Authentication Page Test
+    def test_digest_auth_send_correct_keys(self):
+        digest_auth_page.send_correct_keys(self.driver)
+        self.assertTrue(confirm_digest_auth_page.confirmation_message_visible(self.driver))
+
     # Upload File Page Tests
     def test_upload_file(self):
         file_upload_page.click_file_upload_tab(self.driver)
@@ -156,13 +161,13 @@ class Tests(unittest.TestCase):
     # Form Authentication Page Tests
     def test_send_correct_credentials(self):
         form_authentication_page.click_form_authentication_tab(self.driver)
-        form_authentication_page.send_correct_data(self.driver)
+        form_authentication_page.send_valid_data(self.driver)
         self.assertTrue(logout_page.secure_area_message_visible(self.driver))
 
     def test_send_incorrect_credentials(self):
         form_authentication_page.click_form_authentication_tab(self.driver)
-        form_authentication_page.send_invalid_data(self.driver)
-        self.assertTrue()
+        self.assertTrue(form_authentication_page.send_invalid_data(self.driver))
+
 
 
 
